@@ -29,6 +29,7 @@ public class MainBrowser extends Application {
 	private TextField urlField = new TextField();
 	private final ScrollPane SCROLL_PANE = new ScrollPane();
 
+	/*main method*/
 	public static void main(String[] args) {
 		launch(args);
 	}
