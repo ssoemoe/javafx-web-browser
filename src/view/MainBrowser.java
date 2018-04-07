@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 /**
  * JavaFX simple web browser
  * @author Shane Khant Soe Moe (Yahu)
@@ -31,7 +32,7 @@ public class MainBrowser extends Application {
 	private final WebEngine ENGINE = BROWSER.getEngine();
 	private TextField urlField = new TextField();
 	private final ScrollPane SCROLL_PANE = new ScrollPane();
-	private Button refreshButton;
+	private Button refreshButton, goBackButton, nextButton;
 	private String urlString;
 
 	/*main method*/
@@ -67,6 +68,7 @@ public class MainBrowser extends Application {
 				if(!urlHttp.equalsIgnoreCase("http")) {
 					urlString = "http://" + urlField.getText(); 
 					ENGINE.load(urlString);
+					Controller.getController().addHistory(urlString);
 				}
 
 				else {
@@ -91,9 +93,25 @@ public class MainBrowser extends Application {
 			ENGINE.load(urlString);
 		});
 		
+		/*Go Back*/
+		goBackButton = new Button("Back");
+		goBackButton.setOnAction(e->{
+			String urlStr = Controller.getController().getHistoryUrl("prev");
+			urlField.setText(urlStr);
+			ENGINE.load(urlStr);
+		});
+		
+		/*next url*/
+		nextButton = new Button("Forward");
+		nextButton.setOnAction(e->{
+			String urlStr = Controller.getController().getHistoryUrl("next");
+			urlField.setText(urlStr);
+			ENGINE.load(urlStr);
+		});
+		
 		/*Top Panel*/
 		HBox topPanel = new HBox(10);
-		topPanel.getChildren().addAll(refreshButton, urlField);
+		topPanel.getChildren().addAll(goBackButton, nextButton, refreshButton, urlField);
 		topPanel.setHgrow(urlField, Priority.ALWAYS);
 		
 		/*Set the main vertical view*/
